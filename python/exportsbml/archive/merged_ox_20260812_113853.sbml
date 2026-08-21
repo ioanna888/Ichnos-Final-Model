@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <annotation>
+    <SimBiology xmlns="http://www.mathworks.com">
+      <Version Major="25" Minor="2" Point="0"/>
+    </SimBiology>
+  </annotation>
+  <model id="mwc696ad6e_98ee_4769_8386_35f45110c424" name="TIP_TetR_binding">
+    <listOfUnitDefinitions>
+      <unitDefinition id="MWBUILTINUNIT_liter" name="liter">
+        <listOfUnits>
+          <unit kind="metre" exponent="3"/>
+          <unit kind="dimensionless" multiplier="0.001"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_nanomole__liter" name="nanomole/liter">
+        <listOfUnits>
+          <unit kind="metre" exponent="-3"/>
+          <unit kind="mole" exponent="1"/>
+          <unit kind="dimensionless" multiplier="1e-06"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_nanomole__liter_liter" name="(nanomole/liter)*(liter)">
+        <listOfUnits>
+          <unit kind="mole" exponent="1" multiplier="1e-09"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_1__nanomole__liter__hour" name="1/(nanomole/liter)/hour">
+        <listOfUnits>
+          <unit kind="metre" exponent="3"/>
+          <unit kind="mole" exponent="-1"/>
+          <unit kind="second" exponent="-1"/>
+          <unit kind="dimensionless" multiplier="277.777777777778"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_1__hour" name="1/hour">
+        <listOfUnits>
+          <unit kind="second" exponent="-1"/>
+          <unit kind="dimensionless" multiplier="0.000277777777777778"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_nanomole__liter__hour" name="nanomole/liter/hour">
+        <listOfUnits>
+          <unit kind="metre" exponent="-3"/>
+          <unit kind="mole" exponent="1"/>
+          <unit kind="second" exponent="-1"/>
+          <unit kind="dimensionless" multiplier="2.77777777777778e-10"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="mwf51b6a79_204b_41cc_a0f7_411ceb924373" name="cell" spatialDimensions="3" size="1" units="MWBUILTINUNIT_liter" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="mw7303685c_10d1_49f1_b0ab_a24defe78516" name="TetR_active" compartment="mwf51b6a79_204b_41cc_a0f7_411ceb924373" initialConcentration="0" substanceUnits="MWDERIVEDUNIT_nanomole__liter_liter" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+        <annotation>
+          <SimBiology xmlns="http://www.mathworks.com">
+            <Unit Numerator="nanomole/liter"/>
+          </SimBiology>
+        </annotation>
+      </species>
+      <species id="mw04447a3c_3f5a_49ce_880c_8e5e0d5b9064" name="TIP" compartment="mwf51b6a79_204b_41cc_a0f7_411ceb924373" initialConcentration="0" substanceUnits="MWDERIVEDUNIT_nanomole__liter_liter" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+        <annotation>
+          <SimBiology xmlns="http://www.mathworks.com">
+            <Unit Numerator="nanomole/liter"/>
+          </SimBiology>
+        </annotation>
+      </species>
+      <species id="mwb98eaa88_e331_419f_bae5_385b96857986" name="TetR_TIP_complex" compartment="mwf51b6a79_204b_41cc_a0f7_411ceb924373" initialConcentration="0" substanceUnits="MWDERIVEDUNIT_nanomole__liter_liter" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+        <annotation>
+          <SimBiology xmlns="http://www.mathworks.com">
+            <Unit Numerator="nanomole/liter"/>
+          </SimBiology>
+        </annotation>
+      </species>
+      <species id="cell_Reporter_dark_green" name="Reporter_dark_green" compartment="mwf51b6a79_204b_41cc_a0f7_411ceb924373" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="cell_Reporter_green" name="Reporter_green" compartment="mwf51b6a79_204b_41cc_a0f7_411ceb924373" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="cell_Reporter_dark_red" name="Reporter_dark_red" compartment="mwf51b6a79_204b_41cc_a0f7_411ceb924373" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="cell_Reporter_intermediate" name="Reporter_intermediate" compartment="mwf51b6a79_204b_41cc_a0f7_411ceb924373" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="cell_Reporter_red" name="Reporter_red" compartment="mwf51b6a79_204b_41cc_a0f7_411ceb924373" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="mw255d8b17_24bb_4b40_b117_7e2b1a9da171" name="b" value="4" units="MWDERIVEDUNIT_1__nanomole__liter__hour" constant="true"/>
+      <parameter id="mwcd6e7518_be87_4a94_9eb4_d15c7b443e24" name="u_w" value="1" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="mwbf7f3e60_8cdd_49d8_a5ff_757f46ea7ffd" name="delta_w" value="0.35" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="mwe7fd500e_7692_4d95_b2a9_ed5a9471826d" name="a_TetR" value="50" units="MWDERIVEDUNIT_nanomole__liter__hour" constant="true"/>
+      <parameter id="mwb1cc1460_93eb_4572_9b67_f05297bf1303" name="k_deg_TetR" value="0.35" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="mw6cc4754e_4133_4feb_a065_4df7424c2bb5" name="K_R" value="0.44" units="MWDERIVEDUNIT_nanomole__liter" constant="true"/>
+      <parameter id="mwbe341ad3_9a73_4ff9_aa05_5c9969a351b9" name="n" value="4" units="dimensionless" constant="true"/>
+      <parameter id="mwee6f44ad_97d8_4757_a285_d85d249f87c8" name="k_deg_TIP" value="0.3" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="mwc52302ca_f952_43c7_85cd_b9a3076c57f0" name="P" value="1" units="dimensionless" constant="false"/>
+      <parameter id="mw468db6d4_ebe7_4d55_ba3d_6679453667f6" name="P_min" value="0.0056" units="dimensionless" constant="true"/>
+      <parameter id="mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026" name="mu" value="0.2" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="S_ox" name="S_ox" value="271" constant="true"/>
+      <parameter id="EC50_ox" name="EC50_ox" value="271" constant="true"/>
+      <parameter id="n_ox" name="n_ox" value="1.7" constant="true"/>
+      <parameter id="beta_basal_ox" name="beta_basal_ox" value="5" constant="true"/>
+      <parameter id="beta_max_ox" name="beta_max_ox" value="25" constant="true"/>
+      <parameter id="sensing_ox_k_deg_TIP" name="k_deg_TIP" value="0.3" constant="true"/>
+      <parameter id="a_Reporter" name="a_Reporter" value="50" constant="true"/>
+      <parameter id="m" name="m" value="7.39" constant="true"/>
+      <parameter id="m1" name="m1" value="2.46" constant="true"/>
+      <parameter id="m2" name="m2" value="1.37" constant="true"/>
+      <parameter id="k_deg_Reporter" name="k_deg_Reporter" value="0.01" constant="true"/>
+      <parameter id="E" name="E" value="0.173" constant="true"/>
+      <parameter id="f" name="f" value="1" constant="true"/>
+      <parameter id="Total_red_pool" name="Total_red_pool" value="1" constant="false"/>
+      <parameter id="b_fret" name="b_fret" value="1" constant="false"/>
+      <parameter id="Observed_Green" name="Observed_Green" value="1" constant="false"/>
+      <parameter id="Ratio_RG_FRET" name="Ratio_RG_FRET" value="1" constant="false"/>
+      <parameter id="Measured_Ratio_RG" name="Measured_Ratio_RG" value="1" constant="false"/>
+      <parameter id="eps" name="eps" value="1e-09" constant="true"/>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="mwc52302ca_f952_43c7_85cd_b9a3076c57f0">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <plus/>
+            <ci> mw468db6d4_ebe7_4d55_ba3d_6679453667f6 </ci>
+            <apply>
+              <times/>
+              <apply>
+                <minus/>
+                <cn type="integer"> 1 </cn>
+                <ci> mw468db6d4_ebe7_4d55_ba3d_6679453667f6 </ci>
+              </apply>
+              <apply>
+                <divide/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <plus/>
+                  <cn type="integer"> 1 </cn>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <divide/>
+                      <ci> mw7303685c_10d1_49f1_b0ab_a24defe78516 </ci>
+                      <ci> mw6cc4754e_4133_4feb_a065_4df7424c2bb5 </ci>
+                    </apply>
+                    <ci> mwbe341ad3_9a73_4ff9_aa05_5c9969a351b9 </ci>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+    <listOfReactions>
+      <reaction id="mwa0470ca8_8b95_4959_8f58_994aa7c3855f" name="Reaction_1" reversible="true">
+        <listOfReactants>
+          <speciesReference species="mw04447a3c_3f5a_49ce_880c_8e5e0d5b9064" stoichiometry="1"/>
+          <speciesReference species="mw7303685c_10d1_49f1_b0ab_a24defe78516" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwb98eaa88_e331_419f_bae5_385b96857986" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <ci> mw255d8b17_24bb_4b40_b117_7e2b1a9da171 </ci>
+                  <ci> mw04447a3c_3f5a_49ce_880c_8e5e0d5b9064 </ci>
+                  <ci> mw7303685c_10d1_49f1_b0ab_a24defe78516 </ci>
+                </apply>
+                <apply>
+                  <times/>
+                  <ci> mwcd6e7518_be87_4a94_9eb4_d15c7b443e24 </ci>
+                  <ci> mwb98eaa88_e331_419f_bae5_385b96857986 </ci>
+                </apply>
+              </apply>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwbfff2646_c042_423e_ad04_818f98986503" name="Reaction_2" reversible="false">
+        <listOfProducts>
+          <speciesReference species="mw7303685c_10d1_49f1_b0ab_a24defe78516" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> mwe7fd500e_7692_4d95_b2a9_ed5a9471826d </ci>
+              <ci> mwc52302ca_f952_43c7_85cd_b9a3076c57f0 </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw6d09ee02_3d73_40f7_9cc3_2687c91614e6" name="Reaction_3" reversible="false">
+        <listOfReactants>
+          <speciesReference species="mw7303685c_10d1_49f1_b0ab_a24defe78516" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> mwb1cc1460_93eb_4572_9b67_f05297bf1303 </ci>
+                <ci> mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026 </ci>
+              </apply>
+              <ci> mw7303685c_10d1_49f1_b0ab_a24defe78516 </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwee52bcda_a30c_4931_b29a_5dd45ef0211d" name="Reaction_5" reversible="false">
+        <listOfReactants>
+          <speciesReference species="mwb98eaa88_e331_419f_bae5_385b96857986" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> mwbf7f3e60_8cdd_49d8_a5ff_757f46ea7ffd </ci>
+                <ci> mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026 </ci>
+              </apply>
+              <ci> mwb98eaa88_e331_419f_bae5_385b96857986 </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="sensing_0_Reaction_1" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="mw04447a3c_3f5a_49ce_880c_8e5e0d5b9064" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> beta_basal_ox </ci>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <times/>
+                    <apply>
+                      <minus/>
+                      <ci> beta_max_ox </ci>
+                      <ci> beta_basal_ox </ci>
+                    </apply>
+                    <apply>
+                      <power/>
+                      <apply>
+                        <divide/>
+                        <ci> S_ox </ci>
+                        <ci> EC50_ox </ci>
+                      </apply>
+                      <ci> n_ox </ci>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <plus/>
+                    <cn type="integer"> 1 </cn>
+                    <apply>
+                      <power/>
+                      <apply>
+                        <divide/>
+                        <ci> S_ox </ci>
+                        <ci> EC50_ox </ci>
+                      </apply>
+                      <ci> n_ox </ci>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="sensing_1_Reaction_2" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="mw04447a3c_3f5a_49ce_880c_8e5e0d5b9064" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> sensing_ox_k_deg_TIP </ci>
+                <ci> mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026 </ci>
+              </apply>
+              <ci> mw04447a3c_3f5a_49ce_880c_8e5e0d5b9064 </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="reporter_0_Reaction_1" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="cell_Reporter_dark_green" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_Reporter </ci>
+              <ci> mwc52302ca_f952_43c7_85cd_b9a3076c57f0 </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="reporter_1_Reaction_2" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_dark_green" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="cell_Reporter_green" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> m </ci>
+              <ci> cell_Reporter_dark_green </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="reporter_2_Reaction_3" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_dark_green" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> k_deg_Reporter </ci>
+                <ci> mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026 </ci>
+              </apply>
+              <ci> cell_Reporter_dark_green </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="reporter_3_Reaction_4" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_green" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> k_deg_Reporter </ci>
+                <ci> mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026 </ci>
+              </apply>
+              <ci> cell_Reporter_green </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="reporter_4_Reaction_5" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="cell_Reporter_dark_red" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_Reporter </ci>
+              <ci> mwc52302ca_f952_43c7_85cd_b9a3076c57f0 </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="reporter_5_Reaction_6" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_dark_red" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="cell_Reporter_intermediate" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> m1 </ci>
+              <ci> cell_Reporter_dark_red </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="reporter_6_Reaction_7" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_intermediate" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="cell_Reporter_red" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> m2 </ci>
+              <ci> cell_Reporter_intermediate </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="reporter_7_Reaction_8" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_dark_red" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> k_deg_Reporter </ci>
+                <ci> mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026 </ci>
+              </apply>
+              <ci> cell_Reporter_dark_red </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="reporter_8_Reaction_9" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_intermediate" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> k_deg_Reporter </ci>
+                <ci> mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026 </ci>
+              </apply>
+              <ci> cell_Reporter_intermediate </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="reporter_9_Reaction_10" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_red" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> k_deg_Reporter </ci>
+                <ci> mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026 </ci>
+              </apply>
+              <ci> cell_Reporter_red </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

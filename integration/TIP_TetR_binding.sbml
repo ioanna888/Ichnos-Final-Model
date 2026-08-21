@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <annotation>
+    <SimBiology xmlns="http://www.mathworks.com">
+      <Version Major="25" Minor="2" Point="0"/>
+    </SimBiology>
+  </annotation>
+  <model id="mwc696ad6e_98ee_4769_8386_35f45110c424" name="TIP_TetR_binding">
+    <listOfUnitDefinitions>
+      <unitDefinition id="MWBUILTINUNIT_liter" name="liter">
+        <listOfUnits>
+          <unit kind="metre" exponent="3"/>
+          <unit kind="dimensionless" multiplier="0.001"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_nanomole__liter" name="nanomole/liter">
+        <listOfUnits>
+          <unit kind="metre" exponent="-3"/>
+          <unit kind="mole" exponent="1"/>
+          <unit kind="dimensionless" multiplier="1e-06"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_nanomole__liter_liter" name="(nanomole/liter)*(liter)">
+        <listOfUnits>
+          <unit kind="mole" exponent="1" multiplier="1e-09"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_1__nanomole__liter__hour" name="1/(nanomole/liter)/hour">
+        <listOfUnits>
+          <unit kind="metre" exponent="3"/>
+          <unit kind="mole" exponent="-1"/>
+          <unit kind="second" exponent="-1"/>
+          <unit kind="dimensionless" multiplier="277.777777777778"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_1__hour" name="1/hour">
+        <listOfUnits>
+          <unit kind="second" exponent="-1"/>
+          <unit kind="dimensionless" multiplier="0.000277777777777778"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_nanomole__liter__hour" name="nanomole/liter/hour">
+        <listOfUnits>
+          <unit kind="metre" exponent="-3"/>
+          <unit kind="mole" exponent="1"/>
+          <unit kind="second" exponent="-1"/>
+          <unit kind="dimensionless" multiplier="2.77777777777778e-10"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="mwf51b6a79_204b_41cc_a0f7_411ceb924373" name="cell" spatialDimensions="3" size="1" units="MWBUILTINUNIT_liter" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="mw7303685c_10d1_49f1_b0ab_a24defe78516" name="TetR_active" compartment="mwf51b6a79_204b_41cc_a0f7_411ceb924373" initialConcentration="0" substanceUnits="MWDERIVEDUNIT_nanomole__liter_liter" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+        <annotation>
+          <SimBiology xmlns="http://www.mathworks.com">
+            <Unit Numerator="nanomole/liter"/>
+          </SimBiology>
+        </annotation>
+      </species>
+      <species id="mw04447a3c_3f5a_49ce_880c_8e5e0d5b9064" name="TIP" compartment="mwf51b6a79_204b_41cc_a0f7_411ceb924373" initialConcentration="0" substanceUnits="MWDERIVEDUNIT_nanomole__liter_liter" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+        <annotation>
+          <SimBiology xmlns="http://www.mathworks.com">
+            <Unit Numerator="nanomole/liter"/>
+          </SimBiology>
+        </annotation>
+      </species>
+      <species id="mwb98eaa88_e331_419f_bae5_385b96857986" name="TetR_TIP_complex" compartment="mwf51b6a79_204b_41cc_a0f7_411ceb924373" initialConcentration="0" substanceUnits="MWDERIVEDUNIT_nanomole__liter_liter" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+        <annotation>
+          <SimBiology xmlns="http://www.mathworks.com">
+            <Unit Numerator="nanomole/liter"/>
+          </SimBiology>
+        </annotation>
+      </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="mw255d8b17_24bb_4b40_b117_7e2b1a9da171" name="b" value="4" units="MWDERIVEDUNIT_1__nanomole__liter__hour" constant="true"/>
+      <parameter id="mwcd6e7518_be87_4a94_9eb4_d15c7b443e24" name="u_w" value="1" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="mwbf7f3e60_8cdd_49d8_a5ff_757f46ea7ffd" name="delta_w" value="0.12" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="mwe7fd500e_7692_4d95_b2a9_ed5a9471826d" name="a_TetR" value="50" units="MWDERIVEDUNIT_nanomole__liter__hour" constant="true"/>
+      <parameter id="mwb1cc1460_93eb_4572_9b67_f05297bf1303" name="k_deg_TetR" value="0.12" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="mw6cc4754e_4133_4feb_a065_4df7424c2bb5" name="K_R" value="0.44" units="MWDERIVEDUNIT_nanomole__liter" constant="true"/>
+      <parameter id="mwbe341ad3_9a73_4ff9_aa05_5c9969a351b9" name="n" value="4" units="dimensionless" constant="true"/>
+      <parameter id="mwc52302ca_f952_43c7_85cd_b9a3076c57f0" name="P" value="1" units="dimensionless" constant="false"/>
+      <parameter id="mw468db6d4_ebe7_4d55_ba3d_6679453667f6" name="P_min" value="0.0056" units="dimensionless" constant="true"/>
+      <parameter id="mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026" name="mu" value="0.35" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="mwc52302ca_f952_43c7_85cd_b9a3076c57f0">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <plus/>
+            <ci> mw468db6d4_ebe7_4d55_ba3d_6679453667f6 </ci>
+            <apply>
+              <times/>
+              <apply>
+                <minus/>
+                <cn type="integer"> 1 </cn>
+                <ci> mw468db6d4_ebe7_4d55_ba3d_6679453667f6 </ci>
+              </apply>
+              <apply>
+                <divide/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <plus/>
+                  <cn type="integer"> 1 </cn>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <divide/>
+                      <ci> mw7303685c_10d1_49f1_b0ab_a24defe78516 </ci>
+                      <ci> mw6cc4754e_4133_4feb_a065_4df7424c2bb5 </ci>
+                    </apply>
+                    <ci> mwbe341ad3_9a73_4ff9_aa05_5c9969a351b9 </ci>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+    <listOfReactions>
+      <reaction id="mwa0470ca8_8b95_4959_8f58_994aa7c3855f" name="Reaction_1" reversible="true">
+        <listOfReactants>
+          <speciesReference species="mw04447a3c_3f5a_49ce_880c_8e5e0d5b9064" stoichiometry="1"/>
+          <speciesReference species="mw7303685c_10d1_49f1_b0ab_a24defe78516" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwb98eaa88_e331_419f_bae5_385b96857986" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <ci> mw255d8b17_24bb_4b40_b117_7e2b1a9da171 </ci>
+                  <ci> mw04447a3c_3f5a_49ce_880c_8e5e0d5b9064 </ci>
+                  <ci> mw7303685c_10d1_49f1_b0ab_a24defe78516 </ci>
+                </apply>
+                <apply>
+                  <times/>
+                  <ci> mwcd6e7518_be87_4a94_9eb4_d15c7b443e24 </ci>
+                  <ci> mwb98eaa88_e331_419f_bae5_385b96857986 </ci>
+                </apply>
+              </apply>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwbfff2646_c042_423e_ad04_818f98986503" name="Reaction_2" reversible="false">
+        <listOfProducts>
+          <speciesReference species="mw7303685c_10d1_49f1_b0ab_a24defe78516" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> mwe7fd500e_7692_4d95_b2a9_ed5a9471826d </ci>
+              <ci> mwc52302ca_f952_43c7_85cd_b9a3076c57f0 </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mw6d09ee02_3d73_40f7_9cc3_2687c91614e6" name="Reaction_3" reversible="false">
+        <listOfReactants>
+          <speciesReference species="mw7303685c_10d1_49f1_b0ab_a24defe78516" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026 </ci>
+                <ci> mwb1cc1460_93eb_4572_9b67_f05297bf1303 </ci>
+              </apply>
+              <ci> mw7303685c_10d1_49f1_b0ab_a24defe78516 </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mwee52bcda_a30c_4931_b29a_5dd45ef0211d" name="Reaction_5" reversible="false">
+        <listOfReactants>
+          <speciesReference species="mwb98eaa88_e331_419f_bae5_385b96857986" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> mwbf7f3e60_8cdd_49d8_a5ff_757f46ea7ffd </ci>
+                <ci> mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026 </ci>
+              </apply>
+              <ci> mwb98eaa88_e331_419f_bae5_385b96857986 </ci>
+              <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

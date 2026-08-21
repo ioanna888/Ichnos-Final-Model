@@ -1,0 +1,52 @@
+"""
+Diagnostic script — ΔΕΝ κάνει merge τίποτα. Απλά φορτώνει το ΚΑΘΑΡΟ
+TIP_TetR_binding.sbml (όπως είναι, μόνο του) μέσα σε tellurium, για να
+δούμε αν το 'cell' assignment-rule error προϋπάρχει ήδη ΠΡΙΝ μπει στο
+merge οτιδήποτε από reporter/sensing module.
+
+Αν αυτό ΣΚΑΣΕΙ με το ίδιο RuntimeError -> το πρόβλημα είναι ήδη μέσα στο
+TIP_TetR_binding.sbml από μόνο του, άσχετο με το merge script.
+
+Αν αυτό ΔΕΝ σκάσει -> το πρόβλημα εμφανίζεται ΜΟΝΟ όταν προστίθενται τα
+reporter species μέσα στο ίδιο compartment, οπότε κοιτάμε το copy_species.
+
+Usage:
+    python diagnose_cell_compartment.py
+"""
+import libsbml
+import tellurium as te
+
+TIP_TETR_MODEL = r"C:\Users\ioann\OneDrive - University of Patras\igem\SynBiology\integration\TIP_TetR_binding.sbml"
+
+print(f"Loading RAW (un-merged) file: {TIP_TETR_MODEL}")
+doc = libsbml.readSBMLFromFile(TIP_TETR_MODEL)
+model = doc.getModel()
+if model is None:
+    errs = "\n".join(doc.getError(i).getMessage() for i in range(doc.getNumErrors()))
+    raise SystemExit(f"Could not even parse the file as SBML:\n{errs}")
+
+print(f"\nModel has {model.getNumCompartments()} compartment(s):")
+for c in model.getListOfCompartments():
+    print(f"  id={c.getId()!r}  name={c.getName()!r}  constant={c.getConstant()}  "
+          f"size_set={c.isSetSize()}  size={c.getSize() if c.isSetSize() else 'N/A'}")
+
+print(f"\nRules in the model ({model.getNumRules()} total):")
+for r in model.getListOfRules():
+    var = r.getVariable() if hasattr(r, "getVariable") else "?"
+    kind = r.getElementName()  # 'assignmentRule', 'rateRule', 'algebraicRule'
+    print(f"  {kind}: variable={var!r}")
+
+print("\nAttempting te.loadSBMLModel on the RAW file (no merge)...")
+try:
+    r = te.loadSBMLModel(libsbml.writeSBMLToString(doc))
+    print("SUCCESS — the raw file loads fine on its own.")
+    print("  => the 'cell' error is introduced by the MERGE (likely by the reporter species "
+          "added into the 'cell' compartment) — look at copy_species / how reporter species "
+          "are created relative to this rule.")
+except Exception as e:
+    print(f"FAILED with: {e}")
+    print("  => this error PRE-EXISTS in TIP_TetR_binding.sbml alone, independent of the merge "
+          "script entirely. Needs fixing at the source (e.g. in COPASI, check the compartment's "
+          "'Type' — if it's 'assignment' instead of 'fixed', that's very likely the cause).")
+
+    

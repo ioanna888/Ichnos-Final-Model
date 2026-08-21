@@ -1,0 +1,64 @@
+{
+  "variant": "er",
+  "built_at": "2026-08-21T20:58:35",
+  "source_files": {
+    "TIP_TetR_model": {
+      "path": "C:\\Users\\ioann\\OneDrive - University of Patras\\igem\\SynBiology\\integration\\TIP_TetR_binding.sbml",
+      "modified": "2026-08-21T20:00:05"
+    },
+    "sensing_module": {
+      "path": "C:\\Users\\ioann\\OneDrive - University of Patras\\igem\\SynBiology\\integration\\ERmodule.sbml",
+      "modified": "2026-08-21T19:58:04"
+    },
+    "reporter_module": {
+      "path": "C:\\Users\\ioann\\OneDrive - University of Patras\\igem\\SynBiology\\integration\\reporter_module_v2.sbml",
+      "modified": "2026-08-21T20:57:10"
+    }
+  },
+  "key_parameters_in_merged_model": {
+    "K_R": {
+      "value": 0.44,
+      "scope": "GLOBAL (model), id='mw6cc4754e_4133_4feb_a065_4df7424c2bb5'"
+    },
+    "P": {
+      "value": 1.0,
+      "scope": "GLOBAL (model), id='mwc52302ca_f952_43c7_85cd_b9a3076c57f0'"
+    },
+    "P_min": {
+      "value": 0.0056,
+      "scope": "GLOBAL (model), id='mw468db6d4_ebe7_4d55_ba3d_6679453667f6'"
+    },
+    "a_TetR": {
+      "value": 50.0,
+      "scope": "GLOBAL (model), id='mwe7fd500e_7692_4d95_b2a9_ed5a9471826d'"
+    },
+    "b": {
+      "value": 4.0,
+      "scope": "GLOBAL (model), id='mw255d8b17_24bb_4b40_b117_7e2b1a9da171'"
+    },
+    "delta_w": {
+      "value": 0.12,
+      "scope": "GLOBAL (model), id='mwbf7f3e60_8cdd_49d8_a5ff_757f46ea7ffd'"
+    },
+    "k_deg_TIP": {
+      "value": 1.0,
+      "scope": "GLOBAL (model), id='k_deg_TIP'"
+    },
+    "k_deg_TetR": {
+      "value": 0.12,
+      "scope": "GLOBAL (model), id='mwb1cc1460_93eb_4572_9b67_f05297bf1303'"
+    },
+    "mu": {
+      "value": 0.35,
+      "scope": "GLOBAL (model), id='mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026'"
+    },
+    "n": {
+      "value": 4.0,
+      "scope": "GLOBAL (model), id='mwbe341ad3_9a73_4ff9_aa05_5c9969a351b9'"
+    },
+    "u_w": {
+      "value": 1.0,
+      "scope": "GLOBAL (model), id='mwcd6e7518_be87_4a94_9eb4_d15c7b443e24'"
+    }
+  }
+}

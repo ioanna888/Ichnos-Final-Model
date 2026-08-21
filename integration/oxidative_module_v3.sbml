@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <annotation>
+    <SimBiology xmlns="http://www.mathworks.com">
+      <Version Major="26" Minor="1" Point="0"/>
+    </SimBiology>
+  </annotation>
+  <model id="OxidativeModule" name="OxidativeModule">
+    <listOfUnitDefinitions>
+      <unitDefinition id="MWBUILTINUNIT_liter" name="liter">
+        <listOfUnits>
+          <unit kind="metre" exponent="3" scale="0" multiplier="1"/>
+          <unit kind="dimensionless" exponent="1" scale="0" multiplier="0.001"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWBUILTINPREFIX_nano_MWBUILTINUNIT_molarity" name="nanomolarity">
+        <listOfUnits>
+          <unit kind="metre" exponent="-3" scale="0" multiplier="1"/>
+          <unit kind="mole" exponent="1" scale="0" multiplier="1"/>
+          <unit kind="dimensionless" exponent="1" scale="0" multiplier="1e-06"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_nanomolarity_liter" name="(nanomolarity)*(liter)">
+        <listOfUnits>
+          <unit kind="mole" exponent="1" scale="0" multiplier="1e-09"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWBUILTINPREFIX_micro_MWBUILTINUNIT_molarity" name="micromolarity">
+        <listOfUnits>
+          <unit kind="metre" exponent="-3" scale="0" multiplier="1"/>
+          <unit kind="mole" exponent="1" scale="0" multiplier="1"/>
+          <unit kind="dimensionless" exponent="1" scale="0" multiplier="0.001"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_nanomolarity__hour" name="nanomolarity/hour">
+        <listOfUnits>
+          <unit kind="metre" exponent="-3" scale="0" multiplier="1"/>
+          <unit kind="mole" exponent="1" scale="0" multiplier="1"/>
+          <unit kind="second" exponent="-1" scale="0" multiplier="1"/>
+          <unit kind="dimensionless" exponent="1" scale="0" multiplier="2.77777777777778e-10"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_1__hour" name="1/hour">
+        <listOfUnits>
+          <unit kind="second" exponent="-1" scale="0" multiplier="1"/>
+          <unit kind="dimensionless" exponent="1" scale="0" multiplier="0.000277777777777778"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="cell" name="cell" spatialDimensions="3" size="1" units="MWBUILTINUNIT_liter" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="cell_TIP_ox" name="TIP_ox" compartment="cell" initialConcentration="0" substanceUnits="MWDERIVEDUNIT_nanomolarity_liter" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+        <annotation>
+          <SimBiology xmlns="http://www.mathworks.com">
+            <Unit Numerator="nanomolarity"/>
+          </SimBiology>
+        </annotation>
+      </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="S_ox" name="S_ox" value="0" units="MWBUILTINPREFIX_micro_MWBUILTINUNIT_molarity" constant="true"/>
+      <parameter id="EC50_ox" name="EC50_ox" value="271" units="MWBUILTINPREFIX_micro_MWBUILTINUNIT_molarity" constant="true"/>
+      <parameter id="n_ox" name="n_ox" value="1.7" units="dimensionless" constant="true"/>
+      <parameter id="beta_basal_ox" name="beta_basal_ox" value="5" units="MWDERIVEDUNIT_nanomolarity__hour" constant="true"/>
+      <parameter id="beta_max_ox" name="beta_max_ox" value="25" units="MWDERIVEDUNIT_nanomolarity__hour" constant="true"/>
+      <parameter id="k_deg_TIP" name="k_deg_TIP" value="1" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="mu" name="mu" value="0.35" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+    </listOfParameters>
+    <listOfReactions>
+      <reaction id="Reaction_1" name="Reaction_1" reversible="false">
+        <listOfProducts>
+          <speciesReference species="cell_TIP_ox" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> beta_basal_ox </ci>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <times/>
+                    <apply>
+                      <minus/>
+                      <ci> beta_max_ox </ci>
+                      <ci> beta_basal_ox </ci>
+                    </apply>
+                    <apply>
+                      <power/>
+                      <apply>
+                        <divide/>
+                        <ci> S_ox </ci>
+                        <ci> EC50_ox </ci>
+                      </apply>
+                      <ci> n_ox </ci>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <plus/>
+                    <cn type="integer"> 1 </cn>
+                    <apply>
+                      <power/>
+                      <apply>
+                        <divide/>
+                        <ci> S_ox </ci>
+                        <ci> EC50_ox </ci>
+                      </apply>
+                      <ci> n_ox </ci>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> cell </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction_2" name="Reaction_2" reversible="false">
+        <listOfReactants>
+          <speciesReference species="cell_TIP_ox" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> k_deg_TIP </ci>
+                <ci> mu </ci>
+              </apply>
+              <ci> cell_TIP_ox </ci>
+              <ci> cell </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

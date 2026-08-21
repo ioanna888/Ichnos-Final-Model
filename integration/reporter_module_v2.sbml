@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <annotation>
+    <SimBiology xmlns="http://www.mathworks.com">
+      <Version Major="26" Minor="1" Point="0"/>
+    </SimBiology>
+  </annotation>
+  <model id="ReporterModule" name="ReporterModule">
+    <listOfUnitDefinitions>
+      <unitDefinition id="MWBUILTINUNIT_liter" name="liter">
+        <listOfUnits>
+          <unit kind="metre" exponent="3" scale="0" multiplier="1"/>
+          <unit kind="dimensionless" exponent="1" scale="0" multiplier="0.001"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWBUILTINPREFIX_nano_MWBUILTINUNIT_molarity" name="nanomolarity">
+        <listOfUnits>
+          <unit kind="metre" exponent="-3" scale="0" multiplier="1"/>
+          <unit kind="mole" exponent="1" scale="0" multiplier="1"/>
+          <unit kind="dimensionless" exponent="1" scale="0" multiplier="1e-06"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_nanomolarity_liter" name="(nanomolarity)*(liter)">
+        <listOfUnits>
+          <unit kind="mole" exponent="1" scale="0" multiplier="1e-09"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_nanomolarity__hour" name="nanomolarity/hour">
+        <listOfUnits>
+          <unit kind="metre" exponent="-3" scale="0" multiplier="1"/>
+          <unit kind="mole" exponent="1" scale="0" multiplier="1"/>
+          <unit kind="second" exponent="-1" scale="0" multiplier="1"/>
+          <unit kind="dimensionless" exponent="1" scale="0" multiplier="2.77777777777778e-10"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="MWDERIVEDUNIT_1__hour" name="1/hour">
+        <listOfUnits>
+          <unit kind="second" exponent="-1" scale="0" multiplier="1"/>
+          <unit kind="dimensionless" exponent="1" scale="0" multiplier="0.000277777777777778"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="cell" name="cell" spatialDimensions="3" size="1" units="MWBUILTINUNIT_liter" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="cell_Reporter_dark_green" name="Reporter_dark_green" compartment="cell" initialConcentration="0" substanceUnits="MWDERIVEDUNIT_nanomolarity_liter" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+        <annotation>
+          <SimBiology xmlns="http://www.mathworks.com">
+            <Unit Numerator="nanomolarity"/>
+          </SimBiology>
+        </annotation>
+      </species>
+      <species id="cell_Reporter_green" name="Reporter_green" compartment="cell" initialConcentration="0" substanceUnits="MWDERIVEDUNIT_nanomolarity_liter" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+        <annotation>
+          <SimBiology xmlns="http://www.mathworks.com">
+            <Unit Numerator="nanomolarity"/>
+          </SimBiology>
+        </annotation>
+      </species>
+      <species id="cell_Reporter_dark_red" name="Reporter_dark_red" compartment="cell" initialConcentration="0" substanceUnits="MWDERIVEDUNIT_nanomolarity_liter" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+        <annotation>
+          <SimBiology xmlns="http://www.mathworks.com">
+            <Unit Numerator="nanomolarity"/>
+          </SimBiology>
+        </annotation>
+      </species>
+      <species id="cell_Reporter_intermediate" name="Reporter_intermediate" compartment="cell" initialConcentration="0" substanceUnits="MWDERIVEDUNIT_nanomolarity_liter" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+        <annotation>
+          <SimBiology xmlns="http://www.mathworks.com">
+            <Unit Numerator="nanomolarity"/>
+          </SimBiology>
+        </annotation>
+      </species>
+      <species id="cell_Reporter_red" name="Reporter_red" compartment="cell" initialConcentration="0" substanceUnits="MWDERIVEDUNIT_nanomolarity_liter" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+        <annotation>
+          <SimBiology xmlns="http://www.mathworks.com">
+            <Unit Numerator="nanomolarity"/>
+          </SimBiology>
+        </annotation>
+      </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="P" name="P" value="0.5" units="dimensionless" constant="true"/>
+      <parameter id="a_Reporter" name="a_Reporter" value="50" units="MWDERIVEDUNIT_nanomolarity__hour" constant="true"/>
+      <parameter id="m" name="m" value="7.39" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="m1" name="m1" value="2.46" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="m2" name="m2" value="1.37" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="k_deg_Reporter" name="k_deg_Reporter" value="0.01" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="mu" name="mu" value="0.35" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="E" name="E" value="0.173" units="dimensionless" constant="true"/>
+      <parameter id="f" name="f" value="1" units="dimensionless" constant="true"/>
+      <parameter id="Total_red_pool" name="Total_red_pool" value="1" units="MWBUILTINPREFIX_nano_MWBUILTINUNIT_molarity" constant="false"/>
+      <parameter id="b_fret" name="b_fret" value="1" units="dimensionless" constant="false"/>
+      <parameter id="Observed_Green" name="Observed_Green" value="1" units="MWBUILTINPREFIX_nano_MWBUILTINUNIT_molarity" constant="false"/>
+      <parameter id="Ratio_RG_FRET" name="Ratio_RG_FRET" value="1" units="dimensionless" constant="false"/>
+      <parameter id="Measured_Ratio_RG" name="Measured_Ratio_RG" value="1" units="dimensionless" constant="false"/>
+      <parameter id="eps" name="eps" value="1e-09" units="MWBUILTINPREFIX_nano_MWBUILTINUNIT_molarity" constant="true"/>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="Total_red_pool">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <plus/>
+            <ci> cell_Reporter_dark_red </ci>
+            <ci> cell_Reporter_intermediate </ci>
+            <ci> cell_Reporter_red </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="b_fret">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <ci> cell_Reporter_red </ci>
+            <apply>
+              <plus/>
+              <ci> Total_red_pool </ci>
+              <ci> eps </ci>
+            </apply>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Observed_Green">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> cell_Reporter_green </ci>
+            <apply>
+              <minus/>
+              <cn type="integer"> 1 </cn>
+              <apply>
+                <times/>
+                <ci> b_fret </ci>
+                <ci> E </ci>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Ratio_RG_FRET">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <ci> cell_Reporter_red </ci>
+            <apply>
+              <plus/>
+              <ci> Observed_Green </ci>
+              <ci> eps </ci>
+            </apply>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Measured_Ratio_RG">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> f </ci>
+            <ci> Ratio_RG_FRET </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+    <listOfReactions>
+      <reaction id="Reaction_1" name="Reaction_1" reversible="false">
+        <listOfProducts>
+          <speciesReference species="cell_Reporter_dark_green" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_Reporter </ci>
+              <ci> P </ci>
+              <ci> cell </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction_2" name="Reaction_2" reversible="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_dark_green" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="cell_Reporter_green" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> m </ci>
+              <ci> cell_Reporter_dark_green </ci>
+              <ci> cell </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction_3" name="Reaction_3" reversible="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_dark_green" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> k_deg_Reporter </ci>
+                <ci> mu </ci>
+              </apply>
+              <ci> cell_Reporter_dark_green </ci>
+              <ci> cell </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction_4" name="Reaction_4" reversible="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_green" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> k_deg_Reporter </ci>
+                <ci> mu </ci>
+              </apply>
+              <ci> cell_Reporter_green </ci>
+              <ci> cell </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction_5" name="Reaction_5" reversible="false">
+        <listOfProducts>
+          <speciesReference species="cell_Reporter_dark_red" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_Reporter </ci>
+              <ci> P </ci>
+              <ci> cell </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction_6" name="Reaction_6" reversible="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_dark_red" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="cell_Reporter_intermediate" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> m1 </ci>
+              <ci> cell_Reporter_dark_red </ci>
+              <ci> cell </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction_7" name="Reaction_7" reversible="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_intermediate" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="cell_Reporter_red" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> m2 </ci>
+              <ci> cell_Reporter_intermediate </ci>
+              <ci> cell </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction_8" name="Reaction_8" reversible="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_dark_red" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> k_deg_Reporter </ci>
+                <ci> mu </ci>
+              </apply>
+              <ci> cell_Reporter_dark_red </ci>
+              <ci> cell </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction_9" name="Reaction_9" reversible="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_intermediate" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> k_deg_Reporter </ci>
+                <ci> mu </ci>
+              </apply>
+              <ci> cell_Reporter_intermediate </ci>
+              <ci> cell </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction_10" name="Reaction_10" reversible="false">
+        <listOfReactants>
+          <speciesReference species="cell_Reporter_red" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> k_deg_Reporter </ci>
+                <ci> mu </ci>
+              </apply>
+              <ci> cell_Reporter_red </ci>
+              <ci> cell </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>
