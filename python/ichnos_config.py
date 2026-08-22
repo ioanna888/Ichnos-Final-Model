@@ -40,16 +40,16 @@ TIP_ER → TetR → reporter) είναι δύο ΞΕΧΩΡΙΣΤΑ κύτταρ�
 από το COPASI/Tellurium parameters panel — model scope):
     b            = 4       1/(nanomole/liter)/hour
     u_w          = 1       1/hour
-    delta_w      = 0.35    1/hour
+    delta_w      = 0.35    1/hour ->  0.12    1/hour   (καθαρή αποικοδόμηση· +mu στην αντίδραση)
     a_TetR       = 50      nanomole/liter/hour
-    k_deg_TetR   = 0.35    1/hour
+    k_deg_TetR   = 0.35    1/hour -> k_deg_TetR   = 0.12    1/hour          (καθαρή αποικοδόμηση· +mu στην αντίδραση)
     K_R          = 0.44    nanomole/liter
     n            = 4       dimensionless   (TetR cooperativity, βλ. πίνακα παραμέτρων)
-    k_deg_TIP    = 0.30    1/hour          (ΗΔΗ combined rate: degradation+dilution)
+    k_deg_TIP    = 0.30    1/hour          (ΗΔΗ combined rate: degradation+dilution) -> αφαιρέθηκε, ζει στα sensing modules (1.0 1/hour)
     P            = 1       dimensionless   (boundary/assignment rule species — ΟΧΙ constant param)
     P_min        = 0.0056  dimensionless
     mu           = 0.20    1/hour          (dilution — τώρα ΚΑΝΟΝΙΚΟ model parameter, όχι μόνο
-                                             προστιθέμενο term μέσα σε reactions)
+                                             προστιθέμενο term μέσα σε reactions) ->  0.35    1/hour          (αραίωση· διπλασιασμός 120 min)
 
 ⚠️ OPEN / PENDING ITEMS:
    - Το `mu` (0.2) και το `P` (rule-governed, τιμή 1.0) είναι πλέον σωστά
