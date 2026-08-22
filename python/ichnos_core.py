@@ -13,9 +13,80 @@ from ichnos_config import (
 )
 from ichnos_diagnostics import (
     check_for_stale_duplicate, check_unruled_variable_parameters,
-    print_shared_parameter_summary,
+    print_shared_parameter_summary, check_missing_units,
 )
 from ichnos_io import save_merged_sbml
+
+
+# ---------------------------------------------------------------------------
+# UNITS
+# ---------------------------------------------------------------------------
+# The submodels were exported by different COPASI sessions, so the SAME
+# physical unit can appear under different ids: e.g. Ioanna's model calls
+# nanomole/liter "MWDERIVEDUNIT_nanomole__liter", while the sensing/reporter
+# modules call the identical unit "MWBUILTINPREFIX_nano_MWBUILTINUNIT_molarity".
+# This map points each such source id at Ioanna's (destination) equivalent, so
+# merged parameters/species all reference ONE canonical unit definition rather
+# than accumulating duplicates. Verified 2026-08-22 with
+# libsbml.UnitDefinition.areEquivalent (dimensional equivalence) that each pair
+# below is the same physical unit.
+UNIT_ALIASES = {
+    "MWBUILTINPREFIX_nano_MWBUILTINUNIT_molarity": "MWDERIVEDUNIT_nanomole__liter",
+    "MWDERIVEDUNIT_nanomolarity_liter":            "MWDERIVEDUNIT_nanomole__liter_liter",
+    "MWDERIVEDUNIT_nanomolarity__hour":            "MWDERIVEDUNIT_nanomole__liter__hour",
+}
+
+
+def copy_unit_definition(dest_model, unit_def, new_id=None):
+    """Deep-copies a UnitDefinition into dest_model under new_id (or its own id)."""
+    ud = dest_model.createUnitDefinition()
+    ud.setId(new_id or unit_def.getId())
+    if unit_def.isSetName():
+        ud.setName(unit_def.getName())
+    for i in range(unit_def.getNumUnits()):
+        u_src = unit_def.getUnit(i)
+        u = ud.createUnit()
+        u.setKind(u_src.getKind())
+        u.setExponent(u_src.getExponent())
+        u.setScale(u_src.getScale())
+        u.setMultiplier(u_src.getMultiplier())
+    return ud
+
+
+def plan_unit_renames(dest_model, src_model, prefix):
+    """Decides, for every UnitDefinition in src_model, what id it should use in
+    the merged (dest) model, and which ones need to actually be created.
+
+    Returns (rename_map, needs_creation):
+      rename_map[src_id]  -> the id to use in dest (may be an alias target,
+                             the same id, or unchanged-on-collision)
+      needs_creation      -> set of src ids whose definition must be copied in
+
+    Uses areEquivalent (dimensional equivalence), NOT areIdentical: COPASI
+    exports the same physical unit with cosmetically different internal
+    representations (extra dimensionless factors, ordering), so areIdentical
+    gives false-negatives even for byte-for-byte-equal units like 'liter'.
+    areEquivalent compares actual dimensions, which is what we care about.
+    """
+    rename_map, needs_creation = {}, set()
+    for ud in src_model.getListOfUnitDefinitions():
+        uid = ud.getId()
+        if uid in UNIT_ALIASES:
+            rename_map[uid] = UNIT_ALIASES[uid]      # canonical equivalent in dest
+            continue
+        existing = dest_model.getUnitDefinition(uid)
+        if existing is None:
+            rename_map[uid] = uid
+            needs_creation.add(uid)                   # genuinely new unit (e.g. micro_molarity)
+        elif libsbml.UnitDefinition.areEquivalent(existing, ud):
+            rename_map[uid] = uid                      # same id, same dimension -> reuse
+        else:
+            print(f"  [!] UNIT COLLISION: '{uid}' from {prefix} has the same id but a "
+                  f"DIMENSIONALLY DIFFERENT definition. Not copied; references keep the "
+                  f"destination's version.")
+            rename_map[uid] = uid
+    return rename_map, needs_creation
+
 
 def load_model_or_fail(path):
     if not os.path.isfile(path):
@@ -230,14 +301,19 @@ def plan_parameter_renames(dest_model, source_model, prefix, skip_names=frozense
     return rename_map, needs_creation
 
 
-def copy_parameter(dest_model, param, new_id):
+def copy_parameter(dest_model, param, new_id, unit_rename_map=None):
     """Creates param in dest_model under new_id. Caller (via
     plan_parameter_renames's needs_creation set) is responsible for only
     calling this when new_id is NOT already taken — this function no longer
     silently no-ops on a collision, since with name-based planning upstream,
     reaching an actual id collision here means something skipped the plan
     and is a real bug worth a loud failure rather than silently discarding
-    data."""
+    data.
+
+    unit_rename_map (from plan_unit_renames) maps the source's unit ids to the
+    id they get in the merged model; the parameter's own units attribute is
+    carried over through it so merged params keep their units (previously lost
+    — a bare number like EC50=271 in an otherwise-nM model)."""
     if dest_model.getParameter(new_id) is not None:
         raise AssertionError(
             f"copy_parameter called with new_id='{new_id}' which already exists in the "
@@ -249,9 +325,12 @@ def copy_parameter(dest_model, param, new_id):
     p.setName(param.getName())
     p.setValue(param.getValue())
     p.setConstant(param.getConstant())
+    if param.isSetUnits():
+        u = param.getUnits()
+        p.setUnits(unit_rename_map.get(u, u) if unit_rename_map else u)
 
 
-def copy_species(dest_model, species, source_model, new_id=None):
+def copy_species(dest_model, species, source_model, new_id=None, unit_rename_map=None):
     pid = new_id or species.getId()
     if dest_model.getSpecies(pid) is not None:
         # Same class of bug as the parameter id collision: creating a second
@@ -274,6 +353,11 @@ def copy_species(dest_model, species, source_model, new_id=None):
     s.setConstant(species.getConstant())
     s.setBoundaryCondition(species.getBoundaryCondition())
     s.setHasOnlySubstanceUnits(species.getHasOnlySubstanceUnits())
+    # carry the substance UNIT (not just the hasOnlySubstanceUnits boolean),
+    # renamed through the unit map so it points at the merged model's unit id
+    if species.isSetSubstanceUnits():
+        su = species.getSubstanceUnits()
+        s.setSubstanceUnits(unit_rename_map.get(su, su) if unit_rename_map else su)
 
 
 def copy_reaction(dest_model, reaction, id_rename_map, new_id):
@@ -417,10 +501,21 @@ def build_variant_sbml_string(variant, save_sbml=True):
         **sensing_compartment_renames,
     }
 
+    # Units must be planned & created BEFORE any parameter/species that
+    # references them is copied, otherwise those references would point at
+    # unit ids that don't exist yet in the merged model.
+    sensing_unit_renames, sensing_unit_needs_creation = plan_unit_renames(
+        m_tetr, m_sensing, prefix=f"sensing_{variant}"
+    )
+    for ud in m_sensing.getListOfUnitDefinitions():
+        if ud.getId() in sensing_unit_needs_creation:
+            copy_unit_definition(m_tetr, ud, new_id=sensing_unit_renames[ud.getId()])
+
     for p in m_sensing.getListOfParameters():
         old_id = p.getId()
         if old_id in sensing_needs_creation:
-            copy_parameter(m_tetr, p, new_id=sensing_param_renames[old_id])
+            copy_parameter(m_tetr, p, new_id=sensing_param_renames[old_id],
+                           unit_rename_map=sensing_unit_renames)
     for i, r in enumerate(m_sensing.getListOfReactions()):
         copy_reaction(m_tetr, r, sensing_full_rename_map, new_id=f"sensing_{i}_{r.getId()}")
     for rule in m_sensing.getListOfRules():
@@ -445,18 +540,27 @@ def build_variant_sbml_string(variant, save_sbml=True):
     reporter_compartment_renames = plan_compartment_renames(m_tetr, m_reporter)
     reporter_full_rename_map = {**reporter_param_renames, **reporter_compartment_renames}
 
+    reporter_unit_renames, reporter_unit_needs_creation = plan_unit_renames(
+        m_tetr, m_reporter, prefix="reporter"
+    )
+    for ud in m_reporter.getListOfUnitDefinitions():
+        if ud.getId() in reporter_unit_needs_creation:
+            copy_unit_definition(m_tetr, ud, new_id=reporter_unit_renames[ud.getId()])
+
     for s in m_reporter.getListOfSpecies():
-        copy_species(m_tetr, s, m_reporter)
+        copy_species(m_tetr, s, m_reporter, unit_rename_map=reporter_unit_renames)
     for p in m_reporter.getListOfParameters():
         old_id = p.getId()
         if old_id in reporter_needs_creation:
-            copy_parameter(m_tetr, p, new_id=reporter_param_renames[old_id])
+            copy_parameter(m_tetr, p, new_id=reporter_param_renames[old_id],
+                           unit_rename_map=reporter_unit_renames)
     for i, r in enumerate(m_reporter.getListOfReactions()):
         copy_reaction(m_tetr, r, reporter_full_rename_map, new_id=f"reporter_{i}_{r.getId()}")
     for rule in m_reporter.getListOfRules():
         copy_rule(m_tetr, rule, reporter_full_rename_map)
 
     check_unruled_variable_parameters(m_tetr, f"variant={variant}")
+    check_missing_units(m_tetr, f"variant={variant}")
     print_shared_parameter_summary(m_tetr, f"variant={variant}")
 
     sbml_str = libsbml.writeSBMLToString(doc_tetr)
@@ -481,4 +585,3 @@ def build_variant_sbml_string(variant, save_sbml=True):
                 f"accessible if you need the archive/manifest."
             )
     return sbml_str
-

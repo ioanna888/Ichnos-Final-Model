@@ -134,3 +134,16 @@ def check_unruled_variable_parameters(model, label):
             print(f"      - {o}")
     return offenders
 
+
+def check_missing_units(model, label):
+    """Reports every parameter that has NO units attribute set. In a model
+    where concentrations are nM and rates are 1/h, a unitless parameter like
+    EC50=271 is ambiguous (nM? uM?) — a documentation/interpretation hazard,
+    not a simulation error (roadrunner ignores units at runtime). Target: 0.
+    Returns the list of offending parameter ids."""
+    missing = [p.getId() for p in model.getListOfParameters() if not p.isSetUnits()]
+    if missing:
+        print(f"\n  [!] {len(missing)} parameter(s) WITHOUT units in {label}: {missing}")
+    else:
+        print(f"\n  [i] units check ({label}): all parameters have units declared.")
+    return missing
