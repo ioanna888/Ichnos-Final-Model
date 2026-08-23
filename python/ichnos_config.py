@@ -94,15 +94,18 @@ Usage:
 """
 
 import os
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_INTEGRATION = os.path.join(_ROOT, "integration")
 
-TIP_TETR_MODEL = r"C:\Users\ioann\OneDrive - University of Patras\igem\SynBiology\integration\TIP_TetR_binding.sbml"
-REPORTER_MODEL = r"C:\Users\ioann\OneDrive - University of Patras\igem\SynBiology\integration\reporter_module_v2.sbml"
 
-TIP_TETR_MODEL_ALT_CHECK = r"C:\Users\ioann\OneDrive - University of Patras\igem\SynBiology\matlab\tiptetrbinding\TIP_TetR_binding.sbml"
+TIP_TETR_MODEL = os.path.join(_INTEGRATION, "TIP_TetR_binding.sbml")
+REPORTER_MODEL = os.path.join(_INTEGRATION, "reporter_module_v2.sbml")
 
+
+TIP_TETR_MODEL_ALT_CHECK = os.path.join(_ROOT, "matlab", "tiptetrbinding", "TIP_TetR_binding.sbml")
 VARIANTS = {
-    "er": {"sensing_file": r"C:\Users\ioann\OneDrive - University of Patras\igem\SynBiology\integration\ERmodule.sbml", "tip_name": "TIP_er"},
-    "ox": {"sensing_file": r"C:\Users\ioann\OneDrive - University of Patras\igem\SynBiology\integration\oxidative_module_v3.sbml", "tip_name": "TIP_ox"},
+    "er": {"sensing_file": os.path.join(_INTEGRATION, "ERModule.sbml"), "tip_name": "TIP_er"},
+    "ox": {"sensing_file": os.path.join(_INTEGRATION, "oxidative_module_v3.sbml"), "tip_name": "TIP_ox"},
 }
 
 SHARED_PARAM_NAMES = {"mu", "P"}
