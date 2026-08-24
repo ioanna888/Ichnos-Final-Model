@@ -11,6 +11,7 @@ import libsbml
 
 from ichnos_config import SHARED_PARAM_NAMES
 
+
 def check_for_stale_duplicate(primary_path, alt_path):
     """Two files on disk can share the same basename in different folders:
     'integration\\TIP_TetR_binding.sbml' (the shared, canonical copy the merge
@@ -25,7 +26,6 @@ def check_for_stale_duplicate(primary_path, alt_path):
     primary_mtime = os.path.getmtime(primary_path)
     alt_mtime = os.path.getmtime(alt_path)
     if alt_mtime > primary_mtime:
-        from datetime import datetime
         print(
             f"  [i] NOTE: your personal copy '{alt_path}' was modified more recently "
             f"({datetime.fromtimestamp(alt_mtime)}) than the shared copy this script "
@@ -135,6 +135,45 @@ def check_unruled_variable_parameters(model, label):
     return offenders
 
 
+def check_orphan_parameters(model, label):
+    """Complementary check to check_unruled_variable_parameters: that one
+    asks 'who FILLS this variable?' (catches missing rules); this one asks
+    'who READS this constant?' (catches a copied-but-now-useless parameter
+    — usually a sign that whatever WAS supposed to read it didn't come
+    along in the merge, e.g. a rule that got skipped, renamed wrong, or a
+    reaction that never made it in). Not always a bug — could be a
+    genuinely unused leftover parameter — but worth seeing every time,
+    since this exact signal (E, f, eps with zero references) is what
+    revealed the missing-rules bug in the first place.
+    """
+    referenced = set()
+
+    def collect(ast_node):
+        if ast_node is None:
+            return
+        if ast_node.isName():
+            referenced.add(ast_node.getName())
+        for i in range(ast_node.getNumChildren()):
+            collect(ast_node.getChild(i))
+
+    for r in model.getListOfReactions():
+        kl = r.getKineticLaw()
+        if kl is not None:
+            collect(kl.getMath())
+    for rule in model.getListOfRules():
+        collect(rule.getMath())
+
+        orphans = [p for p in model.getListOfParameters() if p.getId() not in referenced]
+    if orphans:
+        print(f"\n  [i] ORPHAN PARAMETER(S) in {label} — not referenced anywhere (no reaction, no rule):")
+        for p in orphans:
+            print(f"      - '{p.getName() or p.getId()}' (id={p.getId()}, value={p.getValue()})")
+    else:
+        print(f"\n  [i] orphan-parameter check ({label}): all parameters are referenced.")
+    return orphans
+
+
+
 def check_missing_units(model, label):
     """Reports every parameter that has NO units attribute set. In a model
     where concentrations are nM and rates are 1/h, a unitless parameter like
@@ -147,3 +186,4 @@ def check_missing_units(model, label):
     else:
         print(f"\n  [i] units check ({label}): all parameters have units declared.")
     return missing
+
