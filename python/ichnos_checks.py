@@ -16,7 +16,9 @@ from ichnos_core import (
     copy_parameter, copy_species, copy_reaction, copy_rule,
     build_variant_sbml_string,
 )
-from ichnos_diagnostics import check_unruled_variable_parameters, find_param_value_anywhere
+from ichnos_diagnostics import (
+    check_unruled_variable_parameters, check_orphan_parameters, find_param_value_anywhere,
+)
 from ichnos_io import (
     save_merged_sbml, _build_id_to_name_map, _relabel_result_columns, _find_id_by_name,
 )
@@ -70,7 +72,8 @@ def build_bypass_sbml_string(exogenous_tip_level, save_sbml=False):
         copy_rule(m_tetr, rule, reporter_full_rename_map)
 
     check_unruled_variable_parameters(m_tetr, "bypass model")
-
+    check_orphan_parameters(m_tetr, "bypass model")
+    
     sbml_str = libsbml.writeSBMLToString(doc_tetr)
     if save_sbml:
         save_merged_sbml(sbml_str, "bypass", m_tetr, {
