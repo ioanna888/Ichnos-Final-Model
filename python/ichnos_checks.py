@@ -73,7 +73,7 @@ def build_bypass_sbml_string(exogenous_tip_level, save_sbml=False):
 
     check_unruled_variable_parameters(m_tetr, "bypass model")
     check_orphan_parameters(m_tetr, "bypass model")
-    
+
     sbml_str = libsbml.writeSBMLToString(doc_tetr)
     if save_sbml:
         save_merged_sbml(sbml_str, "bypass", m_tetr, {
@@ -190,6 +190,59 @@ def sanity_check_exogenous_tip_bypass(tip_levels=(0, 2, 5, 10, 20, 50), t_end=20
           f"{'monotonically non-decreasing' if monotonic else 'NOT monotonic'} with TIP dose.")
     return {"rows": rows, "passed": monotonic}
 
+def sanity_check_qss_speed_robustness(variant, kd_spot_checks=(0.25,), speed_factor=10,
+                                       tolerance_frac=0.05, t_end=200, n_points=200):
+    """CHECK 3 — QSS speed-robustness spot check. The Option-A sweep (b=4
+    fixed, u_w varies -> Kd=u_w/4) only tests the THERMODYNAMIC effect of
+    Kd. It does NOT by itself prove that only the ratio u_w/b matters and
+    not the absolute speed of binding/unbinding — two models with the same
+    Kd but very different absolute rates could in principle behave
+    differently if the faster one isn't actually needed to reach QSS, or if
+    something non-obvious depends on the raw timescale.
+
+    For each Kd in kd_spot_checks, runs TWO simulations at that same Kd:
+      - 'baseline':      b=4  (u_w = Kd*4)               — the normal Option-A point
+      - f'{speed_factor}x_faster': b=4*speed_factor  (u_w = Kd*4*speed_factor) —
+        SAME Kd, but both rates speed_factor times faster
+    and compares final reporter output. If they match within
+    tolerance_frac, that CONFIRMS only the ratio (Kd) matters. If they
+    DON'T match, that's a real finding: something depends on absolute
+    rate, not just Kd.
+    """
+    print(f"\n=== SANITY CHECK 3 — QSS speed-robustness (variant={variant}, {speed_factor}x spot check) ===")
+    all_passed = True
+    for kd in kd_spot_checks:
+        sbml_str = build_variant_sbml_string(variant, save_sbml=False)
+        id_to_name = _build_id_to_name_map(sbml_str)
+        doc = libsbml.readSBMLFromString(sbml_str)
+        m = doc.getModel()
+        b_id = next(p.getId() for p in m.getListOfParameters() if p.getName() == "b")
+
+        def run_at(b_value):
+            r = te.loadSBMLModel(sbml_str)
+            r.reset()
+            r["Kd_TIP_TetR"] = kd
+            r[b_id] = b_value  # rule recomputes u_w = Kd_TIP_TetR * b_value automatically
+            result = r.simulate(0, t_end, n_points)
+            _relabel_result_columns(result, id_to_name)
+            return {name: val for name, val in zip(result.colnames, result[-1])}
+
+        baseline = run_at(4.0)
+        faster = run_at(4.0 * speed_factor)
+
+        baseline_reporter = sum(v for k, v in baseline.items() if "Reporter" in k)
+        faster_reporter = sum(v for k, v in faster.items() if "Reporter" in k)
+        rel_diff = abs(faster_reporter - baseline_reporter) / baseline_reporter if baseline_reporter else float("nan")
+        passed = rel_diff < tolerance_frac
+        all_passed = all_passed and passed
+
+        print(f"  Kd={kd}: baseline reporter={baseline_reporter:.4f}  "
+              f"{speed_factor}x-faster reporter={faster_reporter:.4f}  "
+              f"rel.diff={rel_diff:.4f} (threshold {tolerance_frac})")
+        print(f"    {'PASS' if passed else 'FAIL'}: {'only the Kd ratio matters, as assumed' if passed else 'absolute rate ALSO matters — Option A alone is insufficient here'}")
+
+    print(f"  OVERALL: {'PASS — QSS assumption holds, Option A sweep is sufficient on its own' if all_passed else 'FAIL — see above, full Option B/C/D parametrization may be needed'}")
+    return all_passed
 
 def check_cross_variant_shared_values(variants=None, param_names=None, save_sbml=False):
     """Post-build validation: builds the merged model for EVERY variant and

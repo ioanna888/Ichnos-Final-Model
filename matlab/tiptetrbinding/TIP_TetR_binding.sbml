@@ -76,16 +76,16 @@
     </listOfSpecies>
     <listOfParameters>
       <parameter id="mw255d8b17_24bb_4b40_b117_7e2b1a9da171" name="b" value="4" units="MWDERIVEDUNIT_1__nanomole__liter__hour" constant="true"/>
-      <parameter id="mwcd6e7518_be87_4a94_9eb4_d15c7b443e24" name="u_w" value="1" units="MWDERIVEDUNIT_1__hour" constant="true"/>
-      <parameter id="mwbf7f3e60_8cdd_49d8_a5ff_757f46ea7ffd" name="delta_w" value="0.35" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="mwcd6e7518_be87_4a94_9eb4_d15c7b443e24" name="u_w" value="1" units="MWDERIVEDUNIT_1__hour" constant="false"/>
+      <parameter id="mwbf7f3e60_8cdd_49d8_a5ff_757f46ea7ffd" name="delta_w" value="0.12" units="MWDERIVEDUNIT_1__hour" constant="true"/>
       <parameter id="mwe7fd500e_7692_4d95_b2a9_ed5a9471826d" name="a_TetR" value="50" units="MWDERIVEDUNIT_nanomole__liter__hour" constant="true"/>
-      <parameter id="mwb1cc1460_93eb_4572_9b67_f05297bf1303" name="k_deg_TetR" value="0.35" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="mwb1cc1460_93eb_4572_9b67_f05297bf1303" name="k_deg_TetR" value="0.12" units="MWDERIVEDUNIT_1__hour" constant="true"/>
       <parameter id="mw6cc4754e_4133_4feb_a065_4df7424c2bb5" name="K_R" value="0.44" units="MWDERIVEDUNIT_nanomole__liter" constant="true"/>
       <parameter id="mwbe341ad3_9a73_4ff9_aa05_5c9969a351b9" name="n" value="4" units="dimensionless" constant="true"/>
-      <parameter id="mwee6f44ad_97d8_4757_a285_d85d249f87c8" name="k_deg_TIP" value="0.3" units="MWDERIVEDUNIT_1__hour" constant="true"/>
       <parameter id="mwc52302ca_f952_43c7_85cd_b9a3076c57f0" name="P" value="1" units="dimensionless" constant="false"/>
       <parameter id="mw468db6d4_ebe7_4d55_ba3d_6679453667f6" name="P_min" value="0.0056" units="dimensionless" constant="true"/>
-      <parameter id="mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026" name="mu" value="0.2" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026" name="mu" value="0.35" units="MWDERIVEDUNIT_1__hour" constant="true"/>
+      <parameter id="mwcf7a4142_1b95_48df_8487_907c8b0bda1f" name="Kd_TIP_TetR" value="0.25" units="MWDERIVEDUNIT_nanomole__liter" constant="true"/>
     </listOfParameters>
     <listOfRules>
       <assignmentRule variable="mwc52302ca_f952_43c7_85cd_b9a3076c57f0">
@@ -118,6 +118,15 @@
                 </apply>
               </apply>
             </apply>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="mwcd6e7518_be87_4a94_9eb4_d15c7b443e24">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> mwcf7a4142_1b95_48df_8487_907c8b0bda1f </ci>
+            <ci> mw255d8b17_24bb_4b40_b117_7e2b1a9da171 </ci>
           </apply>
         </math>
       </assignmentRule>
@@ -177,7 +186,11 @@
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
-              <ci> mwb1cc1460_93eb_4572_9b67_f05297bf1303 </ci>
+              <apply>
+                <plus/>
+                <ci> mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026 </ci>
+                <ci> mwb1cc1460_93eb_4572_9b67_f05297bf1303 </ci>
+              </apply>
               <ci> mw7303685c_10d1_49f1_b0ab_a24defe78516 </ci>
               <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
             </apply>
@@ -192,7 +205,11 @@
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
-              <ci> mwbf7f3e60_8cdd_49d8_a5ff_757f46ea7ffd </ci>
+              <apply>
+                <plus/>
+                <ci> mwbf7f3e60_8cdd_49d8_a5ff_757f46ea7ffd </ci>
+                <ci> mwfc0b18ce_ba8a_4f91_bb9e_838d6f352026 </ci>
+              </apply>
               <ci> mwb98eaa88_e331_419f_bae5_385b96857986 </ci>
               <ci> mwf51b6a79_204b_41cc_a0f7_411ceb924373 </ci>
             </apply>
