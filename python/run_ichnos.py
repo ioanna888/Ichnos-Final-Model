@@ -20,7 +20,7 @@ from ichnos_core import build_variant_sbml_string
 from ichnos_io import _build_id_to_name_map, _relabel_result_columns
 from ichnos_checks import (
     sanity_check_zero_stress, sanity_check_exogenous_tip_bypass,
-    check_cross_variant_shared_values,
+    sanity_check_qss_speed_robustness, check_cross_variant_shared_values,
 )
 
 import libsbml
@@ -55,17 +55,20 @@ if __name__ == "__main__":
     requested = args or ["er", "ox"]
 
     if run_sanity:
-        all_passed = True
-        for v in requested:
+            all_passed = True
+    for v in requested:
             if v not in VARIANTS:
                 print(f"Unknown variant '{v}', choose from {list(VARIANTS)}")
                 sys.exit(1)
             result1 = sanity_check_zero_stress(v)
             all_passed = all_passed and result1["passed"]
-        result2 = sanity_check_exogenous_tip_bypass()
-        all_passed = all_passed and result2["passed"]
-        print(f"\n{'='*60}\nOVERALL: {'ALL CHECKS PASSED' if all_passed else 'SOME CHECKS FAILED — see above'}\n{'='*60}")
-        sys.exit(0 if all_passed else 1)
+            qss_passed = sanity_check_qss_speed_robustness(v, kd_spot_checks=(0.01, 0.25, 5.0), speed_factor=10)
+            all_passed = all_passed and qss_passed
+    result2 = sanity_check_exogenous_tip_bypass()
+    all_passed = all_passed and result2["passed"]
+    print(f"\n{'='*60}\nOVERALL: {'ALL CHECKS PASSED' if all_passed else 'SOME CHECKS FAILED — see above'}\n{'='*60}")
+    sys.exit(0 if all_passed else 1)
+    
 
     for v in requested:
         if v not in VARIANTS:
