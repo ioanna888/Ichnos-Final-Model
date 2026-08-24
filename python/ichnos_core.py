@@ -13,8 +13,9 @@ from ichnos_config import (
 )
 from ichnos_diagnostics import (
     check_for_stale_duplicate, check_unruled_variable_parameters,
-    print_shared_parameter_summary, check_missing_units,
+    check_orphan_parameters, print_shared_parameter_summary, check_missing_units,
 )
+
 from ichnos_io import save_merged_sbml
 
 
@@ -560,8 +561,10 @@ def build_variant_sbml_string(variant, save_sbml=True):
         copy_rule(m_tetr, rule, reporter_full_rename_map)
 
     check_unruled_variable_parameters(m_tetr, f"variant={variant}")
+    check_orphan_parameters(m_tetr, f"variant={variant}")
     check_missing_units(m_tetr, f"variant={variant}")
     print_shared_parameter_summary(m_tetr, f"variant={variant}")
+
 
     sbml_str = libsbml.writeSBMLToString(doc_tetr)
     if save_sbml:
