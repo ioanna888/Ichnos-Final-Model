@@ -217,11 +217,14 @@ def sanity_check_qss_speed_robustness(variant, kd_spot_checks=(0.25,), speed_fac
         doc = libsbml.readSBMLFromString(sbml_str)
         m = doc.getModel()
         b_id = next(p.getId() for p in m.getListOfParameters() if p.getName() == "b")
+        # Same name-based lookup as b_id above — SimBiology assigns Kd_TIP_TetR
+        # a GUID id on export, keeping "Kd_TIP_TetR" only as the human Name.
+        kd_id = next(p.getId() for p in m.getListOfParameters() if p.getName() == "Kd_TIP_TetR")
 
         def run_at(b_value):
             r = te.loadSBMLModel(sbml_str)
             r.reset()
-            r["Kd_TIP_TetR"] = kd
+            r[kd_id] = kd
             r[b_id] = b_value  # rule recomputes u_w = Kd_TIP_TetR * b_value automatically
             result = r.simulate(0, t_end, n_points)
             _relabel_result_columns(result, id_to_name)
